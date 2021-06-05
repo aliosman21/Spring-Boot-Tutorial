@@ -1,9 +1,13 @@
 package com.example.accessingdatamysql.subject;
 
+import com.example.accessingdatamysql.dtos.MapperImplementation;
+import com.example.accessingdatamysql.dtos.SimpleMapper;
+import com.example.accessingdatamysql.dtos.SubjectDTO;
 import com.example.accessingdatamysql.student.Student;
 import com.example.accessingdatamysql.student.StudentRepository;
 import com.example.accessingdatamysql.teacher.Teacher;
 import com.example.accessingdatamysql.teacher.TeacherRepository;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,6 +36,8 @@ public class SubjectService {
     @Autowired
     private TeacherRepository teacherRepository;
 
+    private SimpleMapper simpleMapper  = Mappers.getMapper(SimpleMapper.class);
+
     public String enrollStudentToSubject(UUID subject_id , UUID student_id){
         try {
             Subject subject = subjectRepository.findById(subject_id).get();
@@ -44,9 +50,9 @@ public class SubjectService {
         }
     }
 
-    public String addNewSubject(Subject subject) {
+    public String addNewSubject(SubjectDTO subjectDTO) {
         try{
-            subjectRepository.save(subject);
+            subjectRepository.save(simpleMapper.SubjectToDTO(subjectDTO));
             return "Saved Successfully";
         }catch (Exception e){
             return "Database Error";

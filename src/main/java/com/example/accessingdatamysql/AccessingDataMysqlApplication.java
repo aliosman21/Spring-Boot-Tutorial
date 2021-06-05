@@ -1,8 +1,10 @@
 package com.example.accessingdatamysql;
 
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.CacheControl;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -25,6 +27,12 @@ public class AccessingDataMysqlApplication implements WebMvcConfigurer {
         registry.addResourceHandler("/images/down/**").
                 addResourceLocations("classpath:/static-images/down/").
                 setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS).cachePublic());
+    }
+
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
 
